@@ -1,27 +1,45 @@
-import React from "react";
-import styles from "../styles/Home.module.css";
+import React, { useState } from "react";
 import { Search } from "tabler-icons-react";
-import { Link } from "react-router-dom";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import Login from "./Login";
 
 const Home = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
+const handleLoginButton = () => {
+  setShowLogin((pre) => !pre);
+}
   return (
-    <div className={styles.appContainer}>
-      <div className={styles.appHeaderContainer}>
-        <h1 className={styles.appHeaderBranding}>Vanga Sapadalam</h1>
-        <div className={styles.appHeaderSearchContainer}>
-          <Search />
-          <input type="text" className={styles.appHeaderSearchInput}/>
-        </div>
-        <div className={styles.appHeaderAuthContainer}>
-          <Link to="/login" className={styles.appHeaderAuthLink}>
-            Log in
-          </Link>
-          <Link to="/signup" className={styles.appHeaderAuthLink}>
-            Sign up
-          </Link>
-        </div>
-      </div>
-    </div>
+    <>
+    <Container style={{
+      paddingTop: "24px"
+    }}>
+      <Grid display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h4" component="h3">
+          Vanga Sapadalam
+        </Typography>
+        <TextField
+          variant="outlined"
+          style={{
+            minWidth: "500px",
+          }}
+          InputProps={{
+            startAdornment: <Search />
+          }}
+        />
+        <Grid
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap="12px"
+        >
+          <Button variant="contained" onClick={handleLoginButton}> Log in</Button>
+          <Button variant="outlined">Sign up</Button>
+        </Grid>
+      </Grid>
+    </Container>
+    <Login open={showLogin} handleClose={handleLoginButton} />
+    </>
   );
 };
 
