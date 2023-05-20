@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Search } from "tabler-icons-react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import Login from "./Login";
+import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
-  const [showLogin, setShowLogin] = useState(false);
+let navigate = useNavigate();
 
 const handleLoginButton = () => {
-  setShowLogin((pre) => !pre);
+  navigate("/login");  
 }
   return (
     <>
@@ -38,7 +39,6 @@ const handleLoginButton = () => {
         </Grid>
       </Grid>
     </Container>
-    <Login open={showLogin} handleClose={handleLoginButton} />
     </>
   );
 };
