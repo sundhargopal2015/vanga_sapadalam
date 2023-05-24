@@ -18,7 +18,13 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const defaultTheme = createTheme({});
 
-  const handleFormSubmit = (event) => {};
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    // event.target.email.value;
+    // event.target.password.value;
+    
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container
