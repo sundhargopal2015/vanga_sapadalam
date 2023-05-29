@@ -2,10 +2,13 @@ import React from "react";
 import { Search } from "tabler-icons-react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+//11
+import { useSelector } from "react-redux";
 
 
 const Home = () => {
 let navigate = useNavigate();
+const {isUserAuthenticated, userInfo }= useSelector(state=>state.user);
 
 const handleLoginButton = () => {
   navigate("/login");  
@@ -28,6 +31,7 @@ const handleLoginButton = () => {
             startAdornment: <Search />
           }}
         />
+        {isUserAuthenticated ? <p>{userInfo.firstName}</p>:
         <Grid
           display="flex"
           justifyContent="center"
@@ -37,6 +41,7 @@ const handleLoginButton = () => {
           <Button variant="contained" onClick={handleLoginButton}> Log in</Button>
           <Button variant="outlined">Sign up</Button>
         </Grid>
+        }
       </Grid>
     </Container>
     </>

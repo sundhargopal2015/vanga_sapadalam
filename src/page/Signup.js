@@ -18,11 +18,19 @@ import {
 import React, { useState } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
+import { makeRequest } from "../http/makeRequest";
+import {useDispatch} from 'react-redux';
+import { saveUserInfo } from "../store/reducers/signup";
+import { useNavigate } from "react-router-dom";
+//7.useDispatc
 
 const Signup = () => {
   const [userType, setUserType] = useState("");
   const [deliveryAgentLangs, setDeliveryAgentLangs] = useState([]);
   const defaultTheme = createTheme({});
+const navigate = useNavigate();
+  //7.
+  const dispatch = useDispatch();
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -32,7 +40,45 @@ const Signup = () => {
     setDeliveryAgentLangs((pre) => [...pre, ...event.target.value]);
   };
 
-  const handleSignUp = (event) => {};
+  const userCreateCallback = (response) => {
+    const {data , statusText}= response;
+    //7.2 set payload
+    if(statusText === "Created"){
+    const payload ={
+       isUserAuthenticated: true,
+      //10.userInfo
+      userInfo:{
+      userName: data.userName,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
+      mobileNo: data.moNo,
+      userType: data.userType,
+      restaruntName: data.restaruntName,
+      restaruntAddress: data.restaruntAddress,
+      deliveryAgentKnownLanguages: data.deliveryAgentKnownLanguages
+    }
+  }
+    dispatch(saveUserInfo(payload));
+       navigate("/");
+  }else{
+    console.log("user failed");
+  }
+  };
+
+  const handleSignUp = (event) => {
+    event.preventDefault();
+    const userData = {
+      firstName: event.target.fname.value,
+      lastName: event.target.lname.value,
+      userName: event.target.email.value,
+      password: event.target.password.value,
+      mobNo: event.target.mobileno.value,
+      userType: userType,
+    };
+
+    makeRequest("post", "users", userData, userCreateCallback);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -108,7 +154,6 @@ const Signup = () => {
             }}
           />
           <TextField
-            required
             fullWidth
             autoFocus
             type="textarea"
