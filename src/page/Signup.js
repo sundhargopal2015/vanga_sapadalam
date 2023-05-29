@@ -18,12 +18,14 @@ import {
 import React, { useState } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
-import { makeRequest } from "../http/makeRequest";
+import { useDispatch } from "react-redux";
+import { userOperationsLoading } from "../store/reducers/userSlice";
 
 const Signup = () => {
   const [userType, setUserType] = useState("");
   const [deliveryAgentLangs, setDeliveryAgentLangs] = useState([]);
   const defaultTheme = createTheme({});
+  const dispatch = useDispatch();
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -31,10 +33,6 @@ const Signup = () => {
 
   const handleDeliveryAgentLangsChange = (event) => {
     setDeliveryAgentLangs((pre) => [...pre, ...event.target.value]);
-  };
-
-  const userCreateCallback = (response) => {
-    console.log(response);
   };
 
   const handleSignUp = (event) => {
@@ -47,8 +45,12 @@ const Signup = () => {
       mobNo: event.target.mobileno.value,
       userType: userType,
     };
-
-    makeRequest("post", "users", userData, userCreateCallback);
+    const userCreatePayload = {
+      method: "post",
+      endpoint: "users",
+      data: userData,
+    };
+    dispatch(userOperationsLoading(userCreatePayload));
   };
 
   return (
