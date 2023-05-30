@@ -14,10 +14,9 @@ import {
 import React from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
-import { makeRequest } from "../http/makeRequest";
 import { useDispatch } from "react-redux";
+import { fetchUserStart } from "../store/reducers/userSlice";
 import { useNavigate } from "react-router-dom";
-import { saveUserInfo } from "../store/reducers/userSlice";
 
 const Login = () => {
   const defaultTheme = createTheme({});
@@ -29,37 +28,8 @@ const Login = () => {
     event.preventDefault();
     const userName = event.target.email.value;
     const password = event.target.password.value;
-    const userCallback = (response) => {
-      const { data, statusText } = response;
-      if (statusText === "OK") {
-        const user = data.find(
-          (user) => user.userName === userName && user.password === password
-        );
-        if (user) {
-          const payload = {
-            isUserAuthenticated: true,
-            userInfo: {
-              userName: user.userName,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              address: user.address,
-              mobileNo: user.moNo,
-              userType: user.userType,
-              restaurantName: user.restaurantName,
-              restaurantAddress: user.restaurantAddress,
-              deliveryAgentKnownLanguages: user.deliveryAgentKnownLanguages,
-              avatar: user.avatar
-            },
-          };
-          dispatch(saveUserInfo(payload));
-          navigate("/");
-        } else {
-          console.log("Login failed");
-        }
-      }
-    };
-
-    makeRequest("get", "users", userCallback);
+  
+    dispatch(fetchUserStart({userName: userName, password: password, navigate: navigate}));
   };
 
   return (

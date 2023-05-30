@@ -1,11 +1,51 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { userOperationsLoading, saveUserInfo } from "../reducers/userSlice";
+import {
+  saveUserInfo,
+  fetchUserStart,
+  createUserStart,
+} from "../reducers/userSlice";
 import { makeRequest } from "../../http/makeRequest";
 
-function* updateUserInfoSaga({payload}) {
+function* userLoginSaga({ payload }) {
+  const {userName, password, navigate} = payload;
   try {
-    yield put(userOperationsLoading());
+    //yield put(fetchUserStart)
+    const response = yield call(makeRequest, "get",
+      "users",
+    );
+    if(response.statusText === "OK") {
+      const user = response.data.find(
+        (user) => user.userName === userName && user.password === password
+      );
+      if (user) {
+        const userPayload = {
+          isUserAuthenticated: true,
+          userInfo: {
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            address: user.address,
+            mobileNo: user.moNo,
+            userType: user.userType,
+            restaurantName: user.restaurantName,
+            restaurantAddress: user.restaurantAddress,
+            deliveryAgentKnownLanguages: user.deliveryAgentKnownLanguages,
+            avatar: user.avatar
+          },
+        };
+        yield put({type: saveUserInfo.type, payload: userPayload});
+        navigate("/");
+      }
+    }
+    console.log(response, "from user Login saga");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
+function* createUserSaga({ payload }) {
+  try {
+    //yield put(createUserStart());
     const response = yield call(makeRequest, payload);
     const { statusText, data } = response;
     if (statusText === "Created") {
@@ -25,6 +65,7 @@ function* updateUserInfoSaga({payload}) {
         },
       };
       yield put(saveUserInfo(payload));
+      
     }
   } catch (error) {
     console.log(error);
@@ -32,5 +73,6 @@ function* updateUserInfoSaga({payload}) {
 }
 
 export function* watchUserSage() {
-  yield takeLatest(userOperationsLoading.type, updateUserInfoSaga);
+  yield takeLatest(fetchUserStart.type, userLoginSaga);
+  yield takeLatest(createUserStart.type, createUserSaga);
 }

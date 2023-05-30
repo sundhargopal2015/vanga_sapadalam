@@ -19,7 +19,7 @@ import React, { useState } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userOperationsLoading } from "../store/reducers/userSlice";
+import { createUserStart } from "../store/reducers/userSlice";
 
 const Signup = () => {
   const [userType, setUserType] = useState("");
@@ -50,7 +50,7 @@ const Signup = () => {
       endpoint: "users",
       data: userData,
     };
-    dispatch(userOperationsLoading(userCreatePayload));
+    dispatch(createUserStart(userCreatePayload));
   };
 
   return (
