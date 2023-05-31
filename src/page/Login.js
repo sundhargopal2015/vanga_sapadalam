@@ -28,8 +28,14 @@ const Login = () => {
     event.preventDefault();
     const userName = event.target.email.value;
     const password = event.target.password.value;
-  
-    dispatch(fetchUserStart({userName: userName, password: password, navigate: navigate}));
+
+    dispatch(
+      fetchUserStart({
+        userName: userName,
+        password: password,
+        navigate: navigate,
+      })
+    );
   };
 
   return (
@@ -85,7 +91,7 @@ const Login = () => {
             }}
           >
             <Grid item xs>
-              <Link to="/">Forgot password</Link>
+              <Link to="/forgot/password">Forgot password</Link>
             </Grid>
             <Grid item>
               <Link to="/signup">Create new account</Link>
