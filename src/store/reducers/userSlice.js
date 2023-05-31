@@ -6,8 +6,10 @@ const userSlice = createSlice({
     fetchUserStart: false,
     createUserStart: false,
     isUserAuthenticated: false,
+    userNotFound: false,
     userInfo: {
       userName: "",
+      userId: "",
       firstName: "",
       lastName: "",
       address: "",
@@ -33,14 +35,21 @@ const userSlice = createSlice({
       state.isUserAuthenticated = action.payload.isUserAuthenticated;
       state.userInfo = action.payload.userInfo;
     },
+    checkUserName: (state) => {
+      state.fetchUserStart = false;
+      state.createUserStart = false;
+    },
     updatePassword: (state, action) => {
       state.fetchUserStart = false;
       state.createUserStart = false;
       state.userInfo.password = action.payload.password;
     },
+    userNotFound: (state) => {
+      state.userNotFound = true;
+    }
   },
 });
 
-export const { fetchUserStart,createUserStart, saveUserInfo, updatePassword } =
+export const { fetchUserStart,createUserStart, saveUserInfo, updatePassword, checkUserName, userNotFound } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -3,6 +3,8 @@ import {
   saveUserInfo,
   fetchUserStart,
   createUserStart,
+  checkUserName,
+  userNotFound,
 } from "../reducers/userSlice";
 import { makeRequest } from "../../http/makeRequest";
 
@@ -44,12 +46,13 @@ function* userLoginSaga({ payload }) {
 }
 
 function* createUserSaga({ payload }) {
+  const {method, endpoint, navigate} = payload;
   try {
     //yield put(createUserStart());
-    const response = yield call(makeRequest, payload);
+    const response = yield call(makeRequest, method, endpoint, payload.data);
     const { statusText, data } = response;
     if (statusText === "Created") {
-      const payload = {
+      const userPayload = {
         isUserAuthenticated: true,
         userInfo: {
           userName: data.userName,
@@ -64,15 +67,42 @@ function* createUserSaga({ payload }) {
           avatar: data.avatar,
         },
       };
-      yield put(saveUserInfo(payload));
-      
+      yield put(saveUserInfo(userPayload));
+      navigate("/");
     }
   } catch (error) {
     console.log(error);
   }
 }
 
+function* checkUserNameSaga({payload}) {
+  const response = yield call(makeRequest, "get",
+      "users",
+    );
+    if(response.statusText === "OK") {
+      const user = response.data.find(
+        (user) => user.userName === payload.userName
+      );
+    if(user) {
+      const userPayload = {
+        userInfo: {
+          userName: user.userName,
+          userId: user.userId
+        }
+      }
+      console.log("valid user");
+      // yield put(saveUserInfo(userPayload))
+      // payload.navigate("/update/password");
+    } else {
+      console.log("invalid user");
+    //yield put(userNotFound);
+    }
+}
+}
+
+
 export function* watchUserSage() {
   yield takeLatest(fetchUserStart.type, userLoginSaga);
   yield takeLatest(createUserStart.type, createUserSaga);
+  yield takeLatest(checkUserName.type, checkUserNameSaga);
 }

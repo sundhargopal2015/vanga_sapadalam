@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createUserStart } from "../store/reducers/userSlice";
 
@@ -26,6 +26,7 @@ const Signup = () => {
   const [deliveryAgentLangs, setDeliveryAgentLangs] = useState([]);
   const defaultTheme = createTheme({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -44,11 +45,19 @@ const Signup = () => {
       password: event.target.password.value,
       mobNo: event.target.mobileno.value,
       userType: userType,
+      ...(userType === "seller" && {
+        restaurantName: event.target.restaurantName.value,
+      }),
+      ...(userType === "deliveryAgent" && {
+        deliveryAgentKnownLanguages:
+          event.target.deliveryAgentKnownLanguages.value,
+      }),
     };
     const userCreatePayload = {
       method: "post",
       endpoint: "users",
       data: userData,
+      navigate: navigate
     };
     dispatch(createUserStart(userCreatePayload));
   };
@@ -166,66 +175,28 @@ const Signup = () => {
                   mt: 1,
                 }}
               />
-              <TextField
-                required={userType === "seller"}
-                fullWidth
-                autoFocus
-                type="textarea"
-                id="restaurantAddress"
-                label="Restaurant Address"
-                name="restaurantAddress"
-                sx={{
-                  mb: 1,
-                  mt: 1,
-                }}
-              />
             </>
           )}
           {userType && userType === "deliveryAgent" && (
-            <>
-              <TextField
-                required={userType === "deliveryAgent"}
-                fullWidth
-                autoFocus
-                id="deliveryAgentName"
-                label="Delivery agent name"
-                name="deliveryAgentName"
-                sx={{
-                  mb: 1,
-                  mt: 1,
-                }}
-              />
-              <TextField
-                required={userType === "deliveryAgent"}
-                fullWidth
-                autoFocus
-                id="deliveryAgentMNo"
-                label="Delivery agent mobile no"
-                name="deliveryAgentMNo"
-                sx={{
-                  mb: 1,
-                  mt: 1,
-                }}
-              />
-              <FormControl fullWidth>
-                <InputLabel id="user-type-label">
-                  Delivery agent known languages
-                </InputLabel>
-                <Select
-                  labelId="delivery-agent-known-lang-label"
-                  id="delivery-agent-known-lang"
-                  value={deliveryAgentLangs}
-                  label="Delivery agent known languages"
-                  onChange={handleDeliveryAgentLangsChange}
-                  multiple
-                >
-                  <MenuItem value={"ta"}>Tamil</MenuItem>
-                  <MenuItem value={"ka"}>Kannada</MenuItem>
-                  <MenuItem value={"hin"}>Hindi</MenuItem>
-                  <MenuItem value={"en"}>English</MenuItem>
-                </Select>
-              </FormControl>
-            </>
+            <FormControl fullWidth>
+              <InputLabel id="user-type-label">
+                Delivery agent known languages
+              </InputLabel>
+              <Select
+                labelId="delivery-agent-known-lang-label"
+                id="delivery-agent-known-lang"
+                value={deliveryAgentLangs}
+                label="Delivery agent known languages"
+                onChange={handleDeliveryAgentLangsChange}
+                name="deliveryAgentKnownLanguages"
+                multiple
+              >
+                <MenuItem value={"ta"}>Tamil</MenuItem>
+                <MenuItem value={"ka"}>Kannada</MenuItem>
+                <MenuItem value={"hin"}>Hindi</MenuItem>
+                <MenuItem value={"en"}>English</MenuItem>
+              </Select>
+            </FormControl>
           )}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

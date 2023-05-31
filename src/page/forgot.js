@@ -1,7 +1,17 @@
 import React from "react";
 import { Container, Button, Typography, Box, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkUserName } from "../store/reducers/userSlice";
+import { useNavigate } from "react-router-dom";
 const Forgot = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleForgotPasswordEmailVerification = (event) => {
+    event.preventDefault();
+    const userName = event.target.userName.value;
+
+    dispatch(checkUserName({userName, navigate}));
+  };
   return (
     <Container
       maxWidth="xs"
@@ -21,30 +31,27 @@ const Forgot = () => {
         style={{
           border: "1px solid #ccc",
           padding: "20px",
-          height: "300px",
           borderRadius: "6px",
-          boxShadow: "5px 5px #ccc",
         }}
+        onSubmit={handleForgotPasswordEmailVerification}
       >
-        <Typography style={{ marginBottom: "20px" }}>
-          Lost your password? Please enter your username or email address. You
-          will receive a link to create a new password via email.
-        </Typography>
         <TextField
           fullWidth
           id="Email"
           label="Username or Email"
           variant="standard"
           style={{ marginBottom: "10px" }}
+          required
+          name="userName"
         />
 
-        <Button style={{ marginBottom: "200px" }} variant="outlined">
+        <Button
+          style={{ marginBottom: "200px" }}
+          variant="outlined"
+          type="submit"
+        >
           Reset Password
         </Button>
-        {/* <hr style={{ borderBottom: "1px dashed #ccc;" }} /> */}
-        <Link to="/" style={{ textAlign: "left" }}>
-          Remember your password?
-        </Link>
       </Box>
     </Container>
   );
