@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Search } from "tabler-icons-react";
-import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import UserProfileDialog from "../components/userDialog";
 
 const Home = () => {
+  const [showUserDialog, setShowUserDialog] = useState(false);
   let navigate = useNavigate();
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
 
@@ -36,7 +38,14 @@ const Home = () => {
             }}
           />
           {isUserAuthenticated ? (
-            <p>{userInfo.firstName}</p>
+            <Avatar
+              alt="Profile"
+              src={userInfo.avatar}
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={() => setShowUserDialog(pre => !pre)}
+            />
           ) : (
             <Grid
               display="flex"
@@ -47,11 +56,20 @@ const Home = () => {
               <Button variant="contained" onClick={handleLoginButton}>
                 Log in
               </Button>
-              <Button variant="outlined" onClick={handleSignUpButton}>Sign up</Button>
+              <Button variant="outlined" onClick={handleSignUpButton}>
+                Sign up
+              </Button>
             </Grid>
           )}
         </Grid>
       </Container>
+      <UserProfileDialog
+        handleClose={() => {
+          setShowUserDialog((pre) => !pre);
+        }}
+        open={showUserDialog}
+        title={`${userInfo.firstName} ${userInfo.lastName}`}
+      />
     </>
   );
 };

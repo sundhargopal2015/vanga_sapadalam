@@ -2,10 +2,12 @@ import React from "react";
 import { Container, Button, Typography, Box, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { checkUserName } from "../store/reducers/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const Forgot = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.state);
   const handleForgotPasswordEmailVerification = (event) => {
     event.preventDefault();
     const userName = event.target.userName.value;

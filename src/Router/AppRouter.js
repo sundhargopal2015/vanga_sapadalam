@@ -5,6 +5,7 @@ import Home from "../page/Home";
 import Login from "../page/Login";
 import Signup from "../page/Signup";
 import Forgot from "../page/forgot";
+import UpdatePassword from "../page/UpdatePassword";
 
 export const appRouter = createBrowserRouter([
   {
@@ -23,4 +24,8 @@ export const appRouter = createBrowserRouter([
     path: "forgot/password",
     element: <Forgot />,
   },
+  {
+    path: "update/password",
+    element: <UpdatePassword />
+  }
 ]);
