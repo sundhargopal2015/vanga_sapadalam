@@ -112,7 +112,7 @@ function* updatePasswordSaga({ payload }) {
   }
 }
 
-export function* watchUserSage() {
+export function* watchUserSaga() {
   yield takeLatest(fetchUserStart.type, userLoginSaga);
   yield takeLatest(createUserStart.type, createUserSaga);
   yield takeLatest(checkUserName.type, checkUserNameSaga);

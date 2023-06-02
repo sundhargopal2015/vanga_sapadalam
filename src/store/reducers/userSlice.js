@@ -1,27 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const userInitialState =  {
+  fetchUserStart: false,
+  createUserStart: false,
+  updatePasswordStart:false,
+  isUserAuthenticated: false,
+  userNotFound: false,
+  userInfo: {
+    userName: "",
+    userId: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    mobileNo: "",
+    userType: "",
+    restaurantName: "",
+    restaurantAddress: "",
+    deliveryAgentKnownLanguages: [],
+    avatar: "",
+  },
+}
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    fetchUserStart: false,
-    createUserStart: false,
-    updatePasswordStart:false,
-    isUserAuthenticated: false,
-    userNotFound: false,
-    userInfo: {
-      userName: "",
-      userId: "",
-      firstName: "",
-      lastName: "",
-      address: "",
-      mobileNo: "",
-      userType: "",
-      restaurantName: "",
-      restaurantAddress: "",
-      deliveryAgentKnownLanguages: [],
-      avatar: "",
-    },
-  },
+  initialState: userInitialState,
   reducers: {
     fetchUserStart: (state) => {
       state.fetchUserStart = true;
@@ -42,10 +43,11 @@ const userSlice = createSlice({
     },
     updatePasswordStart: (state) => {
       state.updatePasswordStart = true;
-    }
+    },
+    userLogout: () => userInitialState
   },
 });
 
-export const { fetchUserStart,createUserStart, saveUserInfo, updatePasswordStart, checkUserName } =
+export const { fetchUserStart,createUserStart, saveUserInfo, updatePasswordStart, checkUserName, userLogout } =
   userSlice.actions;
 export default userSlice.reducer;

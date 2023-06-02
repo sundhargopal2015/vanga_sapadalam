@@ -1,27 +1,32 @@
-import { Logout } from "@mui/icons-material";
-import { Avatar, Dialog, DialogTitle, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-import React from "react";
-import { List } from "tabler-icons-react";
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import { Logout, Settings } from "tabler-icons-react";
 
-
-const UserProfileDialog = ({handleClose, open, title}) => {
-    return(
-        <Dialog handleClose={handleClose} open={open}>
-            <DialogTitle>{title}</DialogTitle>
-            <List sx={{pt: 0}}>
-                <ListItem disableGutters>
-                    <ListItemButton>
-                        <ListItemAvatar>
-                            <Avatar alt="Logout">
-                                <Logout />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Logout" />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Dialog>
-    )
+export default function UserMenu({userInfo, onClickLogout}) {
+    console.log(userInfo);
+  return (
+    <Paper sx={{ width: 200, maxWidth: "100%", float: "right" }}>
+      <MenuList>
+        <MenuItem>
+          <ListItemText>{`${userInfo.firstName} ${userInfo.lastName}`}</ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <Settings fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Settings</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={onClickLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Logout</ListItemText>
+        </MenuItem>
+      </MenuList>
+    </Paper>
+  );
 }
-
-export default UserProfileDialog;

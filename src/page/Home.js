@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Search } from "tabler-icons-react";
 import { Avatar, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import UserProfileDialog from "../components/userDialog";
+import { useDispatch, useSelector } from "react-redux";
+import UserMenu from "../components/userDialog";
+import { userLogout } from "../store/reducers/userSlice";
 
 const Home = () => {
   const [showUserDialog, setShowUserDialog] = useState(false);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
 
   const handleLoginButton = () => {
@@ -17,6 +20,12 @@ const Home = () => {
   const handleSignUpButton = () => {
     navigate("/signup");
   }
+
+  const handleLogout = () => {
+    setShowUserDialog(false);
+    dispatch(userLogout());
+  }
+
   return (
     <>
       <Container
@@ -63,13 +72,7 @@ const Home = () => {
           )}
         </Grid>
       </Container>
-      <UserProfileDialog
-        handleClose={() => {
-          setShowUserDialog((pre) => !pre);
-        }}
-        open={showUserDialog}
-        title={`${userInfo.firstName} ${userInfo.lastName}`}
-      />
+      {showUserDialog && <UserMenu userInfo={userInfo} onClickLogout={handleLogout}/>}
     </>
   );
 };
