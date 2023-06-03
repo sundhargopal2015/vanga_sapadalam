@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "tabler-icons-react";
-import { Avatar, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "../components/userDialog";
 import { userLogout } from "../store/reducers/userSlice";
+import { fetchAllUsersStart } from "../store/reducers/HomeSlice";
+import RestaurantCard from "../components/ResturantCard";
+import Restaurant from "./Restarunt";
 
 const Home = () => {
   const [showUserDialog, setShowUserDialog] = useState(false);
@@ -12,6 +22,13 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
+  const { users } = useSelector((state) => state.home);
+
+  useEffect(() => {
+    if (isUserAuthenticated) {
+      dispatch(fetchAllUsersStart("seller"));
+    }
+  }, [isUserAuthenticated]);
 
   const handleLoginButton = () => {
     navigate("/login");
@@ -19,11 +36,15 @@ const Home = () => {
 
   const handleSignUpButton = () => {
     navigate("/signup");
-  }
+  };
 
   const handleLogout = () => {
     setShowUserDialog(false);
     dispatch(userLogout());
+  };
+
+  const handleRestaurantClick = (restaurant) => {
+    navigate("/order", {state: {restaurant: restaurant}});
   }
 
   return (
@@ -53,7 +74,7 @@ const Home = () => {
               sx={{
                 cursor: "pointer",
               }}
-              onClick={() => setShowUserDialog(pre => !pre)}
+              onClick={() => setShowUserDialog((pre) => !pre)}
             />
           ) : (
             <Grid
@@ -71,8 +92,28 @@ const Home = () => {
             </Grid>
           )}
         </Grid>
+        {isUserAuthenticated && userInfo.userType === "consumer" && (<>
+        <Typography component="h4" variant="h5" sx={{ marginTop: "20px", marginBottom: "20px"}}>Best Food in Bengaluru</Typography>
+          <Grid
+            container
+            sx={{
+              gap: "20px",
+              justifyContent: "center"
+            }}
+          >
+            {users.map((user) => (
+              <RestaurantCard user={user} onRestaurantClick={handleRestaurantClick}/>
+            ))}
+          </Grid>
+          </>
+        )}
+        {isUserAuthenticated && userInfo.userType === "seller" && (
+          <Restaurant restaurant={userInfo} />
+        )}
       </Container>
-      {showUserDialog && <UserMenu userInfo={userInfo} onClickLogout={handleLogout}/>}
+      {showUserDialog && (
+        <UserMenu userInfo={userInfo} onClickLogout={handleLogout} />
+      )}
     </>
   );
 };

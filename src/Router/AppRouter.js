@@ -6,6 +6,7 @@ import Login from "../page/Login";
 import Signup from "../page/Signup";
 import Forgot from "../page/forgot";
 import UpdatePassword from "../page/UpdatePassword";
+import RestaurantView from "../page/Order";
 
 export const appRouter = createBrowserRouter([
   {
@@ -27,5 +28,9 @@ export const appRouter = createBrowserRouter([
   {
     path: "update/password",
     element: <UpdatePassword />
+  },
+  {
+    path: "order",
+    element: <RestaurantView />
   }
 ]);

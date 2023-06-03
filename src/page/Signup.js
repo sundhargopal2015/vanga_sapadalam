@@ -44,6 +44,7 @@ const Signup = () => {
       userName: event.target.email.value,
       password: event.target.password.value,
       mobNo: event.target.mobileno.value,
+      address: event.target.address.value,
       userType: userType,
       ...(userType === "seller" && {
         restaurantName: event.target.restaurantName.value,
