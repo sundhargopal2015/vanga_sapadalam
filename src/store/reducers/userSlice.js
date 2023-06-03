@@ -15,7 +15,7 @@ const userInitialState =  {
     mobileNo: "",
     userType: "",
     restaurantName: "",
-    restaurantAddress: "",
+    restaurantId: "",
     deliveryAgentKnownLanguages: [],
     avatar: "",
   },

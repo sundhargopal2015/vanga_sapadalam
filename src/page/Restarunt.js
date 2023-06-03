@@ -1,5 +1,16 @@
-import { Grid, Typography, Tab, Tabs, Box, TextField } from "@mui/material";
-import React from "react";
+import {
+  Grid,
+  Typography,
+  Tab,
+  Tabs,
+  Box,
+  TextField,
+  Button,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { createMealStart } from "../store/reducers/RestaurantSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function a11yProps(index) {
   return {
@@ -29,10 +40,30 @@ function TabPanel(props) {
 }
 
 const Restaurant = (props) => {
+    const {tabIndex} = props;
   const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+useEffect(() => {
+    setValue(tabIndex)
+}, [tabIndex]);
+  const handleCreateMeal = (event) => {
+    event.preventDefault();
+    const payload = {
+      meal: {
+        mealName: event.target.mealName.value,
+        mealDescription: event.target.mealDescription.value,
+        mealCost: event.target.mealCost.value,
+        restaurantId: props.restaurant.restaurantId,
+      },
+      navigate: navigate,
+    };
+
+    dispatch(createMealStart(payload));
   };
 
   return (
@@ -50,29 +81,33 @@ const Restaurant = (props) => {
         aria-label="simple tabs example"
       >
         <Tab label="Your orders" {...a11yProps(0)} />
-        <Tab label="Create new Meal" {...a11yProps(1)} />
+        <Tab label="Your meals" {...a11yProps(1)} />
+        <Tab label="Create new Meal" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         Item 1
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Box component="form" sx={{ mt: 1 }}>
+        Item 2
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <Box component="form" sx={{ mt: 1 }} onSubmit={handleCreateMeal}>
           <Grid container spacing={1}>
             <Grid>
               <TextField
                 label="Meal name"
                 required
-                id="mname"
-                name="mname"
+                id="mealName"
+                name="mealName"
                 fullWidth
                 autoFocus
               />
             </Grid>
           </Grid>
-          <Grid container spacing={1} sx={{mt:2,mb:2}}>
+          <Grid container spacing={1} sx={{ mt: 2, mb: 2 }}>
             <Grid>
               <TextField
-                label="mealDescription"
+                label="Meal description"
                 required
                 id="mealDescription"
                 name="mealDescription"
@@ -84,13 +119,28 @@ const Restaurant = (props) => {
           <Grid container spacing={1}>
             <Grid>
               <TextField
-                label="mealCost"
+                label="Meal Cost"
                 required
                 id="mealCost"
                 name="mealCost"
                 fullWidth
                 autoFocus
               />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            spacing={1}
+            sx={{
+              justifyContent: "end",
+              mt: 1.5,
+              mb: 1.5,
+            }}
+          >
+            <Grid>
+              <Button type="submit" variant="contained">
+                Create Meal
+              </Button>
             </Grid>
           </Grid>
         </Box>

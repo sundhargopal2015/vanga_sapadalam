@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "../components/userDialog";
 import { userLogout } from "../store/reducers/userSlice";
@@ -20,6 +20,9 @@ const Home = () => {
   const [showUserDialog, setShowUserDialog] = useState(false);
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  console.log(location);
 
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
   const { users } = useSelector((state) => state.home);
@@ -44,8 +47,10 @@ const Home = () => {
   };
 
   const handleRestaurantClick = (restaurant) => {
-    navigate("/order", {state: {restaurant: restaurant}});
-  }
+    navigate("/order", {
+      state: { restaurant: restaurant}
+    });
+  };
 
   return (
     <>
@@ -92,23 +97,33 @@ const Home = () => {
             </Grid>
           )}
         </Grid>
-        {isUserAuthenticated && userInfo.userType === "consumer" && (<>
-        <Typography component="h4" variant="h5" sx={{ marginTop: "20px", marginBottom: "20px"}}>Best Food in Bengaluru</Typography>
-          <Grid
-            container
-            sx={{
-              gap: "20px",
-              justifyContent: "center"
-            }}
-          >
-            {users.map((user) => (
-              <RestaurantCard user={user} onRestaurantClick={handleRestaurantClick}/>
-            ))}
-          </Grid>
+        {isUserAuthenticated && userInfo.userType === "consumer" && (
+          <>
+            <Typography
+              component="h4"
+              variant="h5"
+              sx={{ marginTop: "20px", marginBottom: "20px" }}
+            >
+              Best Food in Bengaluru
+            </Typography>
+            <Grid
+              container
+              sx={{
+                gap: "20px",
+                justifyContent: "center",
+              }}
+            >
+              {users.map((user) => (
+                <RestaurantCard
+                  user={user}
+                  onRestaurantClick={handleRestaurantClick}
+                />
+              ))}
+            </Grid>
           </>
         )}
         {isUserAuthenticated && userInfo.userType === "seller" && (
-          <Restaurant restaurant={userInfo} />
+          <Restaurant restaurant={userInfo} tabIndex={location.state.isNewMealCreated ? 1 : 0}/>
         )}
       </Container>
       {showUserDialog && (

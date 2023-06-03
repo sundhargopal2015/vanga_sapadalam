@@ -31,6 +31,9 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: "order",
-    element: <RestaurantView />
+    element: <RestaurantView />,
+    state: {
+      isNewMealCreated: false
+    }
   }
 ]);

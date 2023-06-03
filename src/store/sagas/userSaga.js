@@ -29,13 +29,13 @@ function* userLoginSaga({ payload }) {
             mobileNo: user.moNo,
             userType: user.userType,
             restaurantName: user.restaurantName,
-            restaurantAddress: user.restaurantAddress,
+            restaurantId: user.restaurantId,
             deliveryAgentKnownLanguages: user.deliveryAgentKnownLanguages,
             avatar: user.avatar,
           },
         };
         yield put({ type: saveUserInfo.type, payload: userPayload });
-        navigate("/");
+        navigate("/", {state: {isNewMealCreated: false}});
       }
     }
   } catch (error) {
@@ -60,14 +60,13 @@ function* createUserSaga({ payload }) {
           mobileNo: data.moNo,
           userType: data.userType,
           restaurantName: data.restaurantName,
-          restaurantAddress: data.restaurantAddress,
+          restaurantId: data.restaurantId,
           deliveryAgentKnownLanguages: data.deliveryAgentKnownLanguages,
           avatar: data.avatar,
         },
       };
       yield put(saveUserInfo(userPayload));
-      navigate("/");
-    }
+      navigate("/", {state: {isNewMealCreated: false}});    }
   } catch (error) {
     console.log(error);
   }
