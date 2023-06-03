@@ -38,7 +38,6 @@ function* userLoginSaga({ payload }) {
         navigate("/");
       }
     }
-    console.log(response, "from user Login saga");
   } catch (error) {
     console.log(error);
   }
