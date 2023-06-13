@@ -16,6 +16,7 @@ import { fetchAllUsersStart } from "../store/reducers/HomeSlice";
 import RestaurantCard from "../components/ResturantCard";
 import Restaurant from "./Restarunt";
 import { fetchMealsStart } from "../store/reducers/Meals";
+import { fetchSellerMealStart } from "../store/reducers/RestaurantSlice";
 
 const Home = () => {
   const [showUserDialog, setShowUserDialog] = useState(false);
@@ -23,18 +24,15 @@ const Home = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  console.log(location);
-
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
   const { users } = useSelector((state) => state.home);
-
+  const { sellerMeals } = useSelector((state) => state.restaurant);
+  console.log(sellerMeals);
   useEffect(() => {
     if (isUserAuthenticated) {
-      console.log("user authenticated", );
       dispatch(fetchAllUsersStart("seller"));
-      if (userInfo.userType === "seller" || userInfo.userType === "consumer") {
-        console.log("user is seller or consumer");
-        dispatch(fetchMealsStart());
+      if (userInfo.userType === "seller") {
+        dispatch(fetchSellerMealStart());
       }
     }
   }, [isUserAuthenticated]);
@@ -132,6 +130,7 @@ const Home = () => {
           <Restaurant
             restaurant={userInfo}
             tabIndex={location.state.isNewMealCreated ? 1 : 0}
+            meals={sellerMeals.filter(meal => userInfo.restaurantId === meal.restaurantId)}
           />
         )}
       </Container>

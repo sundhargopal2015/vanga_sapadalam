@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createMealStart } from "../store/reducers/RestaurantSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import Meal from "../components/meal";
 
 function a11yProps(index) {
   return {
@@ -28,6 +29,9 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{
+        overflowY: "scroll"
+      }}
       {...other}
     >
       {value === index && (
@@ -40,6 +44,7 @@ function TabPanel(props) {
 }
 
 const Restaurant = (props) => {
+  console.log("rest", props)
     const {tabIndex} = props;
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
@@ -48,6 +53,7 @@ const Restaurant = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
 useEffect(() => {
     setValue(tabIndex)
 }, [tabIndex]);
@@ -88,7 +94,7 @@ useEffect(() => {
         Item 1
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item 2
+       {props.meals.map(meal => <Meal meal={meal} />)}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Box component="form" sx={{ mt: 1 }} onSubmit={handleCreateMeal}>
