@@ -34,6 +34,9 @@ const Home = () => {
       if (userInfo.userType === "seller") {
         dispatch(fetchSellerMealStart());
       }
+      if (userInfo.userType === "consumer") {
+        dispatch(fetchMealsStart());
+      }
     }
   }, [isUserAuthenticated]);
 

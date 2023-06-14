@@ -1,7 +1,6 @@
 .meal-container {
   justify-content: start;
   align-items: center;
-  flex-wrap: nowrap;
   gap: 15px;
 }
 .meal-container img {

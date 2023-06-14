@@ -78,7 +78,7 @@ useEffect(() => {
         marginTop: "20px",
         marginBottom: "20px",
       }}
-      position="fixed"
+      
     >
       <Typography variant="h5">{`Welcome ${props.restaurant.restaurantName}`}</Typography>
       <Tabs

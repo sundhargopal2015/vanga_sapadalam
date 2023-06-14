@@ -1,6 +1,8 @@
 import { Grid, Tabs, Typography, Tab, Box } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
+import MealsSelectList from "../components/mealsSelectList";
+import { useSelector } from "react-redux";
 
 function a11yProps(index) {
   return {
@@ -34,6 +36,8 @@ const RestaurantView = () => {
   const { restaurant } = location.state;
   const [value, setValue] = React.useState(1);
 
+  const {meals} = useSelector(state => state.meals);
+  const restaurantMeals = meals.filter(meal => meal.restaurantId === restaurant.restaurantId);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -60,7 +64,7 @@ const RestaurantView = () => {
         Item 1
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item 2
+        <MealsSelectList meals={restaurantMeals} />
       </TabPanel>
     </Grid>
   );
