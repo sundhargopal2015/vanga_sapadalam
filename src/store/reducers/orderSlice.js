@@ -43,7 +43,10 @@ const orderSlice = createSlice({
               : meal
           )
         : [...state.meals, { mealId: action.payload.meal.mealId, quantity: 1 }];
-        state.priceDetails.mealsCost = calculateMealCost(state.priceDetails.mealsCost, action.meal.mealCost);
+      state.priceDetails.mealsCost = calculateMealCost(
+        state.priceDetails.mealsCost,
+        action.meal.mealCost
+      );
     },
     removeOneMealFromOrder: (state, action) => {},
     updateStatus: (state, action) => {},
