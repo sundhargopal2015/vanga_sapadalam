@@ -5,6 +5,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/rootSaga";
 import RestaurantSlice from "./reducers/RestaurantSlice";
 import mealsSlice from "./reducers/Meals";
+import orderSlice from "./reducers/orderSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -15,7 +16,8 @@ export const store = configureStore({
     user: userSlice,
     home: HomeSlice,
     restaurant: RestaurantSlice,
-    meals: mealsSlice
+    meals: mealsSlice,
+    order: orderSlice
   },
   middleware,
 });

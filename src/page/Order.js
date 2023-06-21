@@ -3,6 +3,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import MealsSelectList from "../components/mealsSelectList";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addOneMealToOrder } from "../store/reducers/orderSlice";
 
 function a11yProps(index) {
   return {
@@ -36,10 +38,25 @@ const RestaurantView = () => {
   const { restaurant } = location.state;
   const [value, setValue] = React.useState(1);
 
-  const {meals} = useSelector(state => state.meals);
-  const restaurantMeals = meals.filter(meal => meal.restaurantId === restaurant.restaurantId);
+  const { meals } = useSelector((state) => state.meals);
+  const { userInfo } = useSelector((state) => state.user);
+  const { order } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const restaurantMeals = meals.filter(
+    (meal) => meal.restaurantId === restaurant.restaurantId
+  );
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleAddMeal = (mealId) => {
+    const payload = {
+      userId: userInfo.userId,
+      restaurantId: restaurant.restaurantId,
+      meal: meals.find((meal) => meal.mealId === mealId),
+    };
+    dispatch(addOneMealToOrder(payload));
   };
 
   return (
@@ -64,7 +81,11 @@ const RestaurantView = () => {
         Item 1
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <MealsSelectList meals={restaurantMeals} />
+        <MealsSelectList
+          meals={restaurantMeals}
+          onMealAdd={handleAddMeal}
+          cartMeals={order.meals}
+        />
       </TabPanel>
     </Grid>
   );

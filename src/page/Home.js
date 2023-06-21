@@ -27,7 +27,7 @@ const Home = () => {
   const { isUserAuthenticated, userInfo } = useSelector((state) => state.user);
   const { users } = useSelector((state) => state.home);
   const { sellerMeals } = useSelector((state) => state.restaurant);
-  console.log(sellerMeals);
+  
   useEffect(() => {
     if (isUserAuthenticated) {
       dispatch(fetchAllUsersStart("seller"));

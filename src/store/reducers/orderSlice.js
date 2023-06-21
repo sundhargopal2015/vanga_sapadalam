@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const calculateMealCost = (mealsCost, meal) => mealsCost + meal.mealCost;
+const calculateMealCost = (mealsCost, meal) => mealsCost + parseInt(meal.mealCost);
 const calculateGst = (mealCost) => (mealCost * 5) / 100;
 const calculateTotalAmount = (priceDetails) => {
   const { mealsCost, gst, handlingFee, deliveryCharge, tips } = priceDetails;
@@ -16,7 +16,7 @@ const initialState = {
   meals: [],
   orderStatus: "",
   priceDetails: {
-    mealsCost: "",
+    mealsCost: 0,
     handlingFee: "",
     gst: "",
     deliveryCharge: "",
@@ -45,7 +45,7 @@ const orderSlice = createSlice({
         : [...state.meals, { mealId: action.payload.meal.mealId, quantity: 1 }];
       state.priceDetails.mealsCost = calculateMealCost(
         state.priceDetails.mealsCost,
-        action.meal.mealCost
+        action.payload.meal
       );
     },
     removeOneMealFromOrder: (state, action) => {},
@@ -53,3 +53,6 @@ const orderSlice = createSlice({
     placeOrder: (state, action) => {},
   },
 });
+
+export const { addOneMealToOrder, removeOneMealFromOrder, updateStatus, placeOrder} = orderSlice.actions;
+export default orderSlice.reducer;
