@@ -2,7 +2,7 @@ import React from "react";
 import Meal from "./meal";
 import { Button, Grid } from "@mui/material";
 
-const MealsSelectList = ({ meals, onMealAdd, cartMeals }) => {
+const MealsSelectList = ({ meals, onMealAdd, onMealRemove, cartMeals }) => {
   return meals.map((meal) => (
     <Grid
       container
@@ -26,7 +26,7 @@ const MealsSelectList = ({ meals, onMealAdd, cartMeals }) => {
               gap: "8px",
             }}
           >
-            <Button variant="contained">-</Button>
+            <Button variant="contained" onClick={() => onMealRemove(meal.mealId)}>-</Button>
             <span>
               {
                 cartMeals.find((cartMeal) => cartMeal.mealId === meal.mealId)

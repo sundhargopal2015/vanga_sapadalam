@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import MealsSelectList from "../components/mealsSelectList";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addOneMealToOrder } from "../store/reducers/orderSlice";
+import { addOneMealToOrder, removeOneMealFromOrder } from "../store/reducers/orderSlice";
 
 function a11yProps(index) {
   return {
@@ -59,6 +59,14 @@ const RestaurantView = () => {
     dispatch(addOneMealToOrder(payload));
   };
 
+  const handleRemoveMeal = (mealId) => {
+    const payload = {
+      userId: userInfo.userId,
+      mealId: mealId
+    }
+    dispatch(removeOneMealFromOrder(payload));
+  }
+
   return (
     <Grid sx={{ margin: "24px" }}>
       <Grid>
@@ -84,6 +92,7 @@ const RestaurantView = () => {
         <MealsSelectList
           meals={restaurantMeals}
           onMealAdd={handleAddMeal}
+          onMealRemove={handleRemoveMeal}
           cartMeals={order.meals}
         />
       </TabPanel>

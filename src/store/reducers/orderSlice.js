@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const calculateMealCost = (mealsCost, meal) => mealsCost + parseInt(meal.mealCost);
+const calculateMealCost = (mealsCost, meal) =>
+  mealsCost + parseInt(meal.mealCost);
 const calculateGst = (mealCost) => (mealCost * 5) / 100;
 const calculateTotalAmount = (priceDetails) => {
   const { mealsCost, gst, handlingFee, deliveryCharge, tips } = priceDetails;
@@ -48,11 +49,36 @@ const orderSlice = createSlice({
         action.payload.meal
       );
     },
-    removeOneMealFromOrder: (state, action) => {},
+    removeOneMealFromOrder: (state, action) => {
+      const meal = state.meals.find(
+        (meal) => meal.mealId === action.payload.mealId
+      );
+      if (state.meals.length === 1 && state.meals[0].quantity === 1) {
+        return initialState;
+      } else if (meal.quantity > 1) {
+        state.meals = state.meals.map((meal) =>
+          meal.mealId === action.payload.mealId
+            ? {
+                ...meal,
+                quantity: meal.quantity - 1,
+              }
+            : meal
+        );
+      } else if (meal.quantity === 1) {
+        state.meals = state.meals.filter(
+          (meal) => meal.mealId !== action.payload.mealId
+        );
+      }
+    },
     updateStatus: (state, action) => {},
     placeOrder: (state, action) => {},
   },
 });
 
-export const { addOneMealToOrder, removeOneMealFromOrder, updateStatus, placeOrder} = orderSlice.actions;
+export const {
+  addOneMealToOrder,
+  removeOneMealFromOrder,
+  updateStatus,
+  placeOrder,
+} = orderSlice.actions;
 export default orderSlice.reducer;
