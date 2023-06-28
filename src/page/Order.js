@@ -1,10 +1,13 @@
-import { Grid, Tabs, Typography, Tab, Box } from "@mui/material";
+import { Grid, Tabs, Typography, Tab, Box, Button } from "@mui/material";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MealsSelectList from "../components/mealsSelectList";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addOneMealToOrder, removeOneMealFromOrder } from "../store/reducers/orderSlice";
+import {
+  addOneMealToOrder,
+  removeOneMealFromOrder,
+} from "../store/reducers/orderSlice";
 
 function a11yProps(index) {
   return {
@@ -42,6 +45,7 @@ const RestaurantView = () => {
   const { userInfo } = useSelector((state) => state.user);
   const { order } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const restaurantMeals = meals.filter(
     (meal) => meal.restaurantId === restaurant.restaurantId
@@ -62,20 +66,37 @@ const RestaurantView = () => {
   const handleRemoveMeal = (mealId) => {
     const payload = {
       userId: userInfo.userId,
-      mealId: mealId
-    }
+      mealId: mealId,
+    };
     dispatch(removeOneMealFromOrder(payload));
+  };
+
+  const handlePlaceOrderClick = () => {
+    navigate("/order/complete");
   }
 
   return (
     <Grid sx={{ margin: "24px" }}>
-      <Grid>
-        <Typography variant="h4">{restaurant.restaurantName}</Typography>
-        <Typography variant="body1">{restaurant.address}</Typography>
+      <Grid
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Grid>
+          <Typography variant="h4">{restaurant.restaurantName}</Typography>
+          <Typography variant="body1">{restaurant.address}</Typography>
 
-        <Typography variant="body2">
-          <span>Open - </span> 10 am to 10pm
-        </Typography>
+          <Typography variant="body2">
+            <span>Open - </span> 10 am to 10pm
+          </Typography>
+        </Grid>
+        <Grid>
+          {!!order.meals.length && (
+            <Button variant="contained" onClick={handlePlaceOrderClick}>Place order</Button>
+          )}
+        </Grid>
       </Grid>
       <Tabs
         value={value}

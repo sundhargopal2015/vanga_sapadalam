@@ -7,6 +7,7 @@ import Signup from "../page/Signup";
 import Forgot from "../page/forgot";
 import UpdatePassword from "../page/UpdatePassword";
 import RestaurantView from "../page/Order";
+import PlaceOrder from "../page/placeOrder";
 
 export const appRouter = createBrowserRouter([
   {
@@ -35,5 +36,9 @@ export const appRouter = createBrowserRouter([
     state: {
       isNewMealCreated: false
     }
+  },
+  {
+    path: "order/complete",
+    element: <PlaceOrder />
   }
 ]);
