@@ -62,9 +62,27 @@ export default function Review() {
           </ListItem>
         ))}
         <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="GST" />
+          <Typography variant="body2">
+            {`₹${order.priceDetails.gst}`}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Delivery charge" />
+          <Typography variant="body2">
+            {`₹${order.priceDetails.deliveryCharge}`}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
+          <ListItemText primary="Handling fee" />
+          <Typography variant="body2">
+            {`₹${order.priceDetails.handlingFee}`}
+          </Typography>
+        </ListItem>
+        <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {`₹${products.reduce((acc, cur) => acc + cur.price, 0)}`}
+            {`₹${order.priceDetails.total}`}
           </Typography>
         </ListItem>
       </List>

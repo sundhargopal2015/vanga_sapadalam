@@ -10,7 +10,6 @@ function* fetchMealsSaga(action) {
         if(response.statusText === "OK") {
             yield put(fetchMeals(response.data));
         }
-        console.log(response);
     } catch(error) {
         console.log(console.log(error));
     }
