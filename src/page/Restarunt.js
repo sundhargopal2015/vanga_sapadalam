@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { createMealStart } from "../store/reducers/RestaurantSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import Meal from "../components/meal";
+import OrderCard from "../components/orderCard";
 
 function a11yProps(index) {
   return {
@@ -91,7 +92,7 @@ useEffect(() => {
         <Tab label="Create new Meal" {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        Item 1
+        <OrderCard />
       </TabPanel>
       <TabPanel value={value} index={1}>
        {props.meals.map(meal => <Meal meal={meal} />)}

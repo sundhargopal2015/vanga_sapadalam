@@ -1,0 +1,26 @@
+.order-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.order-card-batch {
+  width: 100px;
+  border: #000 solid 2px;
+  border-radius: 8px;
+  font-size: 30px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+}
+
+.order-card-meals-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+.order-card-meal-name {
+  min-width: 250px;
+}
