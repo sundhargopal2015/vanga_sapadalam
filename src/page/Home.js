@@ -17,6 +17,9 @@ import RestaurantCard from "../components/ResturantCard";
 import Restaurant from "./Restarunt";
 import { fetchMealsStart } from "../store/reducers/Meals";
 import { fetchSellerMealStart } from "../store/reducers/RestaurantSlice";
+import AspectRatio from '@mui/joy/AspectRatio';
+
+
 
 const Home = () => {
   const [showUserDialog, setShowUserDialog] = useState(false);
@@ -136,6 +139,27 @@ const Home = () => {
             meals={sellerMeals.filter(meal => userInfo.restaurantId === meal.restaurantId)}
           />
         )}
+        
+        <Grid style={{
+          position: "relative"
+        }}>
+          <AspectRatio
+            variant="outlined"
+            // ratio="4/3"
+            sx={{
+              width: '100%',
+              bgcolor: 'background.level2',
+              borderRadius: 'md',
+              marginTop: '30px'
+            }}
+          >
+          <img style={{ width: '100%'}} src="banner.png"  alt="banner" />
+            <Typography style={{position: "absolute", color:'white', fontSize:'3rem', marginTop: '270px', marginLeft: '90px'}}level="h1" component="div">
+            Discover the best food & drinks in Bengaluru
+            </Typography>
+          </AspectRatio>
+        </Grid>
+        
       </Container>
       {showUserDialog && (
         <UserMenu userInfo={userInfo} onClickLogout={handleLogout} />
